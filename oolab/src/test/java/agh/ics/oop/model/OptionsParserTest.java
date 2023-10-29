@@ -2,49 +2,56 @@ package agh.ics.oop.model;
 
 import agh.ics.oop.OptionsParser;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class OptionsParserTest {
     @Test
     public void ValidDirections() {
         String[] validArgs = { "f", "b", "r", "l", "f", "b" };
-        MoveDirection[] expectedDirections = {
+        List<MoveDirection> expectedDirections = Arrays.asList(
                 MoveDirection.FORWARD,
                 MoveDirection.BACKWARD,
                 MoveDirection.RIGHT,
                 MoveDirection.LEFT,
                 MoveDirection.FORWARD,
                 MoveDirection.BACKWARD
-        };
-        assertArrayEquals(expectedDirections, OptionsParser.parse(validArgs));
+        );
+        List<MoveDirection> parsedDirections = OptionsParser.parse(validArgs);
+        assertEquals(expectedDirections, parsedDirections);
     }
+
 
     @Test
     public void InvalidDirections() {
         String[] invalidArgs = { "a", "x", "y", "z" };
-        MoveDirection[] expectedDirections = {};
-        assertArrayEquals(expectedDirections, OptionsParser.parse(invalidArgs));
+        List<MoveDirection> parsedDirections = OptionsParser.parse(invalidArgs);
+        assertTrue(parsedDirections.isEmpty());
     }
 
     @Test
     public void ValidAndInvalidDirections() {
         String[] mixedArgs = { "f", "a", "b", "x", "r", "y", "l", "z" };
-        MoveDirection[] expectedDirections = {
+        List<MoveDirection> expectedDirections = Arrays.asList(
                 MoveDirection.FORWARD,
                 MoveDirection.BACKWARD,
                 MoveDirection.RIGHT,
                 MoveDirection.LEFT
-        };
-        assertArrayEquals(expectedDirections, OptionsParser.parse(mixedArgs));
+        );
+        List<MoveDirection> parsedDirections = OptionsParser.parse(mixedArgs);
+        assertEquals(expectedDirections, parsedDirections);
+
     }
 
     @Test
-    public void testParseEmptyArgs() {
+    public void EmptyDirections() {
         String[] emptyArgs = {};
-        MoveDirection[] expectedDirections = {};
-        assertArrayEquals(expectedDirections, OptionsParser.parse(emptyArgs));
+        List<MoveDirection> parsedDirections = OptionsParser.parse(emptyArgs);
+        assertTrue(parsedDirections.isEmpty());
     }
-
 }
 
 
