@@ -26,8 +26,8 @@ public class SimulationTest {
                 MoveDirection.FORWARD,
                 MoveDirection.LEFT
         );
-
-        return new Simulation(moves, initialPositions);
+        WorldMap map = new RectangularMap(5, 5);
+        return new Simulation(moves, initialPositions, map);
     }
 
     @Test
@@ -69,5 +69,23 @@ public class SimulationTest {
 
         assertEquals(2, animals.size());
         assertEquals(4, simulation.getMoves().size());
+    }
+    @Test
+    public void testSimulation() {
+        simulation = setUp();
+        simulation.run();
+
+        String expectedMapState = " y\\x  0 1 2 3 4 5\n" +
+                "  6: -------------\n" +
+                "  5: | | | | | | |\n" +
+                "  4: | | |^| | | |\n" +
+                "  3: | | | |^| | |\n" +
+                "  2: | | | | | | |\n" +
+                "  1: | | | | | | |\n" +
+                "  0: | | | | | | |\n" +
+                " -1: -------------\n";
+        expectedMapState = expectedMapState.replaceAll("\n", "\r\n");
+
+        assertEquals(expectedMapState, simulation.getMap().toString());
     }
 }

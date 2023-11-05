@@ -17,39 +17,51 @@ public class Animal {
         this.position = new Vector2d(2,2);
     }
 
-    public Animal(Vector2d location){
+    public Animal(Vector2d position){
         this.orientation = MapDirection.NORTH;
-        this.position = location;
+        this.position = position;
     }
 
-    public String toString(){
-        return this.position.toString() + " " + this.orientation.toString();
+    public void setPosition(Vector2d newPosition){
+        this.position = newPosition;
+    }
+    public void setOrientation(MapDirection newOrientation){
+        this.orientation = newOrientation;
+    }
+    public String toString() {
+        switch (orientation) {
+            case NORTH:
+                return "^";
+            case SOUTH:
+                return "v";
+            case WEST:
+                return "<";
+            case EAST:
+                return ">";
+            default:
+                return "";
+        }
     }
 
     boolean isAt(Vector2d position){
         return this.position.equals(position);
     }
 
-    public void move(MoveDirection direction){
-        switch(direction){
-            case RIGHT:
-                this.orientation = orientation.next();
-                break;
-            case LEFT:
-                this.orientation = orientation.previous();
-                break;
-            case FORWARD:
-                Vector2d newPositionForward = this.position.add(this.orientation.toUnitVector());
-                if (newPositionForward.follows(new Vector2d(0, 0)) && newPositionForward.precedes(new Vector2d(4, 4))) {
-                    this.position = newPositionForward;
+    public void move(MoveDirection direction, MoveValidator moveValidator){
+            switch(direction) {
+                case RIGHT -> this.orientation = orientation.next();
+                case LEFT -> this.orientation = orientation.previous();
+                case FORWARD -> {
+                    if(moveValidator.canMoveTo(position.add(orientation.toUnitVector()))){
+                        this.position = position.add(orientation.toUnitVector());
+                    }
                 }
-                break;
-            case BACKWARD:
-                Vector2d newPositionBackward = this.position.substract(this.orientation.toUnitVector());
-                if (newPositionBackward.follows(new Vector2d(0, 0)) && newPositionBackward.precedes(new Vector2d(4, 4))) {
-                    this.position = newPositionBackward;
+                case BACKWARD -> {
+                    if(moveValidator.canMoveTo(position.add(orientation.toUnitVector().opposite()))) {
+                        this.position = position.add(orientation.toUnitVector().opposite());
+                    }
                 }
-                break;
-        }
+            }
     }
 }
+
