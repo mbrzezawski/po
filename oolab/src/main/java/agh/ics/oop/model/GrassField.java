@@ -30,7 +30,7 @@ public class GrassField extends AbstractWorldMap {
         }
     }
     public WorldElement objectAt(Vector2d position) {
-        for (Animal animal : animals) {
+        for (Animal animal : animals.values()) {
             if (animal.getPosition().equals(position)) {
                 return animal;
             }
@@ -45,7 +45,7 @@ public class GrassField extends AbstractWorldMap {
     protected Vector2d getLowerLeft() {
         int minX = Integer.MAX_VALUE;
         int minY = Integer.MAX_VALUE;
-        for (Animal animal : animals) {
+        for (Animal animal : animals.values()) {
             minX = Math.min(minX, animal.getPosition().getX());
             minY = Math.min(minY, animal.getPosition().getY());
         }
@@ -59,7 +59,7 @@ public class GrassField extends AbstractWorldMap {
     protected Vector2d getUpperRight() {
         int maxX = Integer.MIN_VALUE;
         int maxY = Integer.MIN_VALUE;
-        for (Animal animal : animals) {
+        for (Animal animal : animals.values()) {
             maxX = Math.max(maxX, animal.getPosition().getX());
             maxY = Math.max(maxY, animal.getPosition().getY());
         }
@@ -70,7 +70,14 @@ public class GrassField extends AbstractWorldMap {
         return new Vector2d(maxX, maxY);
     }
     public boolean canMoveTo(Vector2d position) {
-        return !isOccupied(position);
+        if (!isOccupied(position)){
+            return true;
+        }
+        else if (objectAt(position).getClass() == Animal.class){
+            return false;
+        }
+        return true;
+
     }
 
 //    private final int grassCount;

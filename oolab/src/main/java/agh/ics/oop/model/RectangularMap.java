@@ -21,7 +21,7 @@ public class RectangularMap extends AbstractWorldMap {
         return false;
     }
     public WorldElement objectAt(Vector2d position) {
-        for(Animal animal : animals){
+        for(Animal animal : animals.values()){
             if(animal.getPosition().equals(position)){
                 return animal;
             }
