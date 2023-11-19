@@ -2,7 +2,9 @@ package agh.ics.oop.model;
 
 import agh.ics.oop.model.util.MapVisualizer;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class RectangularMap extends AbstractWorldMap {
@@ -36,7 +38,14 @@ public class RectangularMap extends AbstractWorldMap {
     protected Vector2d getUpperRight() {
         return new Vector2d(width, height);
     }
+
+    public List<WorldElement> getElements() {
+        return new ArrayList<>(animals.values());
+    }
+
 }
+
+
 
 //    private final int width;
 //    private final int height;

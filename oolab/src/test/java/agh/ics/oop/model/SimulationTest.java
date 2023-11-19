@@ -1,5 +1,7 @@
 package agh.ics.oop.model;
 
+import agh.ics.oop.OptionsParser;
+import agh.ics.oop.PositionAlreadyOccupiedException;
 import agh.ics.oop.Simulation;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
@@ -7,8 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class SimulationTest {
     private Simulation simulation;
@@ -31,7 +32,7 @@ public class SimulationTest {
     }
 
     @Test
-    public void AnimalOrientation() {
+    public void AnimalOrientation() throws PositionAlreadyOccupiedException {
         simulation = setUp();
         simulation.run();
         List<Animal> animals = simulation.getAnimals();
@@ -40,7 +41,7 @@ public class SimulationTest {
         assertEquals(MapDirection.NORTH, animals.get(1).getOrientation());
     }
     @Test
-    public void AnimalPositions() {
+    public void AnimalPositions() throws PositionAlreadyOccupiedException {
         simulation = setUp();
         simulation.run();
         List<Animal> animals = simulation.getAnimals();
@@ -50,7 +51,7 @@ public class SimulationTest {
     }
 
     @Test
-    public void AnimalInBoundaries() {
+    public void AnimalInBoundaries() throws PositionAlreadyOccupiedException {
         simulation = setUp();
         simulation.run();
         List<Animal> animals = simulation.getAnimals();
@@ -62,7 +63,7 @@ public class SimulationTest {
     }
 
     @Test
-    public void InputInterpretation() {
+    public void InputInterpretation() throws PositionAlreadyOccupiedException {
         simulation = setUp();
         simulation.run();
         List<Animal> animals = simulation.getAnimals();
@@ -71,7 +72,7 @@ public class SimulationTest {
         assertEquals(4, simulation.getMoves().size());
     }
     @Test
-    public void testSimulation() {
+    public void testSimulation() throws PositionAlreadyOccupiedException {
         simulation = setUp();
         simulation.run();
 
@@ -87,5 +88,25 @@ public class SimulationTest {
         expectedMapState = expectedMapState.replaceAll("\n", "\r\n");
 
         assertEquals(expectedMapState, simulation.getMap().toString());
+    }
+
+    @Test
+    public void testPlace() throws PositionAlreadyOccupiedException{
+        List<Vector2d> initialPositions = Arrays.asList(
+                new Vector2d(2, 2),
+                new Vector2d(3, 3)
+        );
+
+        List<MoveDirection> moves = Arrays.asList(
+                MoveDirection.FORWARD,
+                MoveDirection.RIGHT,
+                MoveDirection.FORWARD,
+                MoveDirection.LEFT
+        );
+        WorldMap map = new RectangularMap(5, 5);
+        Animal animal = new Animal(new Vector2d(2, 2));
+        map.place(animal);
+        simulation = new Simulation(moves, initialPositions, map);
+        assertThrows(PositionAlreadyOccupiedException.class, () -> simulation.getMap().place(animal));
     }
 }
