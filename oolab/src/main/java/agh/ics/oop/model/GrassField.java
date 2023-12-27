@@ -79,7 +79,9 @@ public class GrassField extends AbstractWorldMap {
         return true;
 
     }
-
+    public List<WorldElement> getElements(){
+        return new ArrayList<>(grassList);
+    }
 //    private final int grassCount;
 //    private final List<Grass> grassList;
 //    private final Set<Animal> animals;

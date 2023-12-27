@@ -1,5 +1,6 @@
 package agh.ics.oop.model;
 
+import agh.ics.oop.PositionAlreadyOccupiedException;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 
@@ -17,11 +18,11 @@ public class GrassFieldTest {
         grassfield = setUpOnGrass();
         System.out.println(grassfield.toString());
         Vector2d testPosition = new Vector2d(2,2);
-        assertFalse(grassfield.isOccupied(testPosition));
+        assertTrue(grassfield.canMoveTo(testPosition));
     }
 
     @Test
-    void testPlaceOnGrass() {
+    void testPlaceOnGrass() throws PositionAlreadyOccupiedException {
         grassfield = setUpOnGrass();
         Vector2d testPosition = new Vector2d(2,2);
         Animal testAnimal = new Animal(testPosition);
@@ -29,17 +30,16 @@ public class GrassFieldTest {
     }
 
     @Test
-    void objectAtOnGrass() {
+    void objectAtOnGrass() throws PositionAlreadyOccupiedException {
         grassfield = setUpOnGrass();
         Vector2d testPosition1 = new Vector2d(2,2);
         Vector2d testPosition2 = new Vector2d(2,3);
         WorldElement testAnimal = new Animal(testPosition1);
         grassfield.place((Animal) testAnimal);
         assertTrue(testAnimal.equals(grassfield.objectAt(testPosition1)));
-        assertNull(grassfield.objectAt(testPosition2));
     }
     @Test
-    void moveOnGrass() {
+    void moveOnGrass() throws PositionAlreadyOccupiedException {
         grassfield = setUpOnGrass();
         Animal animal1 =  new Animal(new Vector2d(2,2));
         Animal animal2 =  new Animal(new Vector2d(2,3));

@@ -7,15 +7,24 @@ import java.util.List;
 
 public class World {
 
-    public static void main(String[] args) {
-        List<MoveDirection> directions = OptionsParser.parse(args);
-        List<Vector2d> positions = List.of(new Vector2d(2,2), new Vector2d(3,2));
+    public static void main(String[] args) throws PositionAlreadyOccupiedException {
+        List<MoveDirection> directions = null;
+        try{
+            directions = OptionsParser.parse(args);
+        }
+        catch(IllegalArgumentException ex) {
+            System.out.println("IllegalArgumentException: " + ex.getMessage());
+            System.exit(1);
+        }
+        List<Vector2d> positions = List.of(new Vector2d(2, 2), new Vector2d(3, 2));
         WorldMap map = new RectangularMap(5, 5);
-        GrassField grassmap = new GrassField(10);
+        GrassField grassMap = new GrassField(10);
 
-        Simulation simulation = new Simulation(directions, positions, grassmap);
+        ConsoleMapDisplay consoleDisplay = new ConsoleMapDisplay();
+        grassMap.addObserver(consoleDisplay);
+
+        Simulation simulation = new Simulation(directions, positions, grassMap);
         simulation.run();
-        System.out.println(map.toString());
     }
 
     public static void run(List<MoveDirection> directions) {

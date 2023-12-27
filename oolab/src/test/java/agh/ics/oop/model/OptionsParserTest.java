@@ -28,8 +28,7 @@ public class OptionsParserTest {
     @Test
     public void InvalidDirections() {
         String[] invalidArgs = { "a", "x", "y", "z" };
-        List<MoveDirection> parsedDirections = OptionsParser.parse(invalidArgs);
-        assertTrue(parsedDirections.isEmpty());
+        assertThrows(IllegalArgumentException.class, () -> OptionsParser.parse(invalidArgs));
     }
 
     @Test
@@ -41,9 +40,7 @@ public class OptionsParserTest {
                 MoveDirection.RIGHT,
                 MoveDirection.LEFT
         );
-        List<MoveDirection> parsedDirections = OptionsParser.parse(mixedArgs);
-        assertEquals(expectedDirections, parsedDirections);
-
+        assertThrows(IllegalArgumentException.class, () -> OptionsParser.parse(mixedArgs));
     }
 
     @Test

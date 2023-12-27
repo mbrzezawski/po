@@ -32,19 +32,19 @@ public class Simulation {
         this.animals = createAnimals(initialPositions);
         this.map = map;
     }
-    public void run() {
+    public void run() throws PositionAlreadyOccupiedException {
         int movesNum = moves.size();
         for (Animal animal : animals) {
-            if(!map.place(animal)){
-                animals.remove(animal);
+            try {
+                map.place(animal);
+            } catch (PositionAlreadyOccupiedException ex) {
+                System.out.println("PositionAlreadyOccupiedException: " + ex.getMessage());
             }
         }
-        System.out.println(map);
         int animalsNum = animals.size();
         for(int i = 0; i < movesNum;i++){
             int currAnimal = i % animalsNum;
             map.move(animals.get(currAnimal),moves.get(i));
-            System.out.println(map);
         }
     }
 }
