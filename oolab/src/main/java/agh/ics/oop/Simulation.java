@@ -8,7 +8,7 @@ import agh.ics.oop.model.WorldMap;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Simulation {
+public class Simulation implements Runnable{
     private final List<MoveDirection> moves;
     private final List<Animal> animals;
     private final WorldMap map;
@@ -32,7 +32,7 @@ public class Simulation {
         this.animals = createAnimals(initialPositions);
         this.map = map;
     }
-    public void run() throws PositionAlreadyOccupiedException {
+    public void run(){
         int movesNum = moves.size();
         for (Animal animal : animals) {
             try {

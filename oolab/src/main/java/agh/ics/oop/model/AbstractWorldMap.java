@@ -10,8 +10,13 @@ public abstract class AbstractWorldMap implements WorldMap{
     protected abstract Vector2d getUpperRight();
     protected List<MapChangeListener> observers = new ArrayList<>();
     protected Map<Vector2d, Animal> animals;
+    private UUID id;
     public AbstractWorldMap() {
         this.animals = new HashMap<>();
+        this.id = UUID.randomUUID();
+    }
+    public UUID getID(){
+        return this.id;
     }
     public Boundary getCurrentBounds() {
         return new Boundary(getLowerLeft(), getUpperRight());
